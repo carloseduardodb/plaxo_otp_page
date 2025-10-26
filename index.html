@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plaxo OTP</title>
+  <meta name="description"
+    content="Gerador de códigos OTP desktop com criptografia AES-256-GCM. Parte do ecossistema Plaxo de aplicativos inteligentes para automação de tarefas." />
+  <meta name="keywords"
+    content="Plaxo, OTP, 2FA, autenticação, segurança, desktop, AES-256, criptografia, automação, aplicativos inteligentes" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Plaxo OTP - Autenticação Segura de Nível Bancário" />
+  <meta property="og:description" content="Gerador de códigos OTP desktop com criptografia AES-256-GCM" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://plaxo-otp.com" />
+  <meta property="og:image" content="/file.png" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Plaxo OTP - Autenticação Segura" />
+  <meta name="twitter:description" content="Gerador de códigos OTP desktop com criptografia AES-256-GCM" />
+  <meta name="twitter:image" content="/file.png" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/file.png" />
+
+  <!-- Preload critical fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Plaxo OTP",
+    "description": "Gerador de códigos OTP desktop com criptografia AES-256-GCM. Parte do ecossistema Plaxo de aplicativos inteligentes.",
+    "applicationCategory": "SecurityApplication",
+    "operatingSystem": ["Windows", "macOS", "Linux"],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Plaxo"
+    },
+    "softwareVersion": "1.0.0",
+    "downloadUrl": "https://github.com/carloseduardodb/plaxo_otp/releases/latest"
+  }
+  </script>
+</head>
+
+<body class="font-sans">
+  <div id="app"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

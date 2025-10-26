@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-plaxo-background text-plaxo-text;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-plaxo-primary hover:bg-plaxo-primary-hover text-black px-8 py-4 rounded-xl font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-plaxo-primary/25 min-h-[44px] flex items-center justify-center;
+  }
+  
+  .btn-secondary {
+    @apply border border-plaxo-border bg-plaxo-surface text-plaxo-text px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-plaxo-surface/80 min-h-[44px] flex items-center justify-center;
+  }
+  
+  .card {
+    @apply bg-plaxo-surface border border-plaxo-border shadow-soft rounded-xl p-6 transition-all duration-300;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-plaxo-primary to-plaxo-primary-hover bg-clip-text text-transparent;
+  }
+}

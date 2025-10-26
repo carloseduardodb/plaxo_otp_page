@@ -1,0 +1,113 @@
+name: Plaxo OTP Landing CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+  deploy:
+    name: Deploy to CapRover
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Create nginx config
+        run: |
+          cat > nginx.conf << 'EOF'
+          events {
+              worker_connections 1024;
+          }
+          http {
+              include /etc/nginx/mime.types;
+              default_type application/octet-stream;
+              sendfile on;
+              keepalive_timeout 65;
+              gzip on;
+              gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+              server {
+                  listen 80;
+                  server_name _;
+                  root /usr/share/nginx/html;
+                  index index.html;
+                  location / {
+                      try_files $uri $uri/ /index.html;
+                  }
+                  location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+                      expires 1y;
+                      add_header Cache-Control "public, immutable";
+                  }
+              }
+          }
+          EOF
+
+      - name: Create Dockerfile
+        run: |
+          cat > Dockerfile << 'EOF'
+          FROM nginx:alpine
+          COPY dist /usr/share/nginx/html
+          COPY nginx.conf /etc/nginx/nginx.conf
+          EXPOSE 80
+          CMD ["nginx", "-g", "daemon off;"]
+          EOF
+
+      - name: Create captain-definition
+        run: |
+          cat > captain-definition << 'EOF'
+          {
+            "schemaVersion": 2,
+            "dockerfilePath": "./Dockerfile"
+          }
+          EOF
+
+      - name: Install CapRover CLI
+        run: npm install -g caprover
+
+      - name: Deploy to CapRover
+        run: |
+          echo "🚀 Deploying Plaxo OTP Landing to CapRover..."
+          tar -czf /tmp/app.tar.gz dist nginx.conf Dockerfile captain-definition
+          caprover deploy \
+            --caproverUrl ${{ secrets.CAPROVER_SERVER }} \
+            --appToken "${{ secrets.CAPROVER_APP_TOKEN }}" \
+            --appName "${{ secrets.CAPROVER_APP_NAME }}" \
+            --tarFile /tmp/app.tar.gz
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: 0
