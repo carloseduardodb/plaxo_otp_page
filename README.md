@@ -11,6 +11,8 @@ Landing page moderna e profissional para o Plaxo OTP construída com Preact, Typ
 - **GitHub Actions** - CI/CD
 - **CapRover** - Deploy e hosting
 - **Nginx** - Servidor web
+- **Formspree** - Formulários de contato
+- **GitHub API** - Downloads dinâmicos
 
 ## 📦 Instalação
 
@@ -45,6 +47,7 @@ O projeto utiliza o Design System Plaxo com as seguintes cores:
 ### CapRover Setup
 
 1. Configure os secrets no GitHub:
+
    - `CAPROVER_SERVER`: URL do seu servidor CapRover
    - `CAPROVER_APP_NAME`: Nome da aplicação no CapRover
    - `CAPROVER_APP_TOKEN`: Token de deploy da aplicação
@@ -71,8 +74,13 @@ plaxo-otp-landing/
 │   │   ├── Features.tsx    # Recursos do app
 │   │   ├── Screenshots.tsx # Screenshots
 │   │   ├── Comparison.tsx  # Comparação
-│   │   ├── Download.tsx    # Downloads
+│   │   ├── Download.tsx    # Downloads dinâmicos
+│   │   ├── AccessRequest.tsx # Formulário de acesso
 │   │   └── Footer.tsx      # Rodapé
+│   ├── utils/
+│   │   └── github.ts       # Utilitários GitHub API
+│   ├── config/
+│   │   └── formspree.ts    # Configuração Formspree
 │   ├── styles/
 │   │   └── index.css       # Estilos globais
 │   ├── app.tsx             # Componente principal
@@ -85,12 +93,28 @@ plaxo-otp-landing/
 ├── Dockerfile              # Container de produção
 ├── captain-definition      # Configuração CapRover
 ├── nginx.conf              # Configuração Nginx
+├── SETUP_FORMSPREE.md      # Guia configuração Formspree
 └── vite.config.ts          # Configuração Vite
 ```
 
 ## 🔧 Configuração
 
-### Variáveis de Ambiente (GitHub Secrets)
+### 1. Formspree (Formulário de Acesso)
+
+1. Crie conta em [formspree.io](https://formspree.io)
+2. Configure o Form ID em `src/config/formspree.ts`
+3. Veja guia completo em `SETUP_FORMSPREE.md`
+
+### 2. Downloads Dinâmicos
+
+Os downloads são buscados automaticamente da API do GitHub:
+
+- Versões atualizadas automaticamente
+- Tamanhos de arquivo reais
+- Links diretos para assets
+- Fallback para versões fixas
+
+### 3. Variáveis de Ambiente (GitHub Secrets)
 
 - `CAPROVER_SERVER`: https://seu-caprover.com
 - `CAPROVER_APP_NAME`: plaxo-otp-landing
@@ -126,6 +150,24 @@ plaxo-otp-landing/
 - X-Frame-Options
 - X-Content-Type-Options
 - XSS Protection
+
+## ✨ Funcionalidades
+
+### Formulário de Solicitação de Acesso
+
+- Integração com Formspree para coleta de emails
+- Interface responsiva e acessível
+- Validação de campos obrigatórios
+- Feedback visual para usuário
+- Auto-reply configurável
+
+### Downloads Dinâmicos
+
+- Busca automática da versão mais recente no GitHub
+- Detecção automática do sistema operacional
+- Tamanhos de arquivo atualizados em tempo real
+- Fallback para versões estáticas
+- Loading states durante carregamento
 
 ## 📄 Licença
 
